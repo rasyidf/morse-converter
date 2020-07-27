@@ -1,4 +1,4 @@
-﻿using System; 
+﻿using System;
 using System.Linq;
 using System.Text;
 
@@ -7,29 +7,63 @@ namespace Morse
     class Program
     {
         private const string separator = " / ";
+        private static MorseConverter _conv = new MorseConverter();
 
         static void Main(string[] args)
-        { 
-            Console.WriteLine("MORSE");
-
-            string textToChange = "";
-            StringBuilder sb = new StringBuilder();
-            
-
-            Console.Write("Masukkan Teks : ");
-            textToChange = Console.ReadLine()
-                                  .ToLower();
-
-            foreach (var c in textToChange.Where(x => Database.CharToMorse.ContainsKey(x)))
+        {
+            bool flags = false;
+            do
             {
-                sb.Append(Database.CharToMorse[c]);
-                sb.Append(separator);
-            }
+                Console.WriteLine("\nMORSE");
 
-            Console.WriteLine("Teks dalam Sandi Morse");
-            Console.WriteLine(sb.ToString());
-            Console.ReadKey();
+                Console.WriteLine("1. Teks -> Morse");
+                Console.WriteLine("2. Morse -> Teks");
+                Console.WriteLine(" ");
+                Console.WriteLine("0. Keluar");
 
+
+                Console.Write("Pilihan : ");
+                if (!Int32.TryParse(Console.ReadLine(), out int pilihan))
+                {
+                    pilihan = -1;
+                }
+
+                switch (pilihan)
+                {
+                    case 1:
+                        Text2Morse();
+                        break;
+                    case 2:
+                        Morse2Text();
+                        break;
+                    case 0:
+                        flags = true;
+                        break;
+                    default:
+                        Console.WriteLine("Mohon masukkan angka 0 - 2");
+                        Console.ReadKey(intercept: true);
+                        break;
+                }
+            } while (!flags);
+            Console.WriteLine("Program selesai");
+        }
+
+        private static void Morse2Text()
+        {
+            Console.Write("MORSE : ");
+            var str = Console.ReadLine();
+            var ret = _conv.ConvertBack(str);
+            Console.WriteLine($"TEKS :\n{ret}");
+            Console.ReadKey(intercept: true);
+        }
+
+        private static void Text2Morse()
+        {
+            Console.Write("TEKS : ");
+            var str = Console.ReadLine();
+            var ret = _conv.Convert(str);
+            Console.WriteLine($"MORSE :\n{ret}");
+            Console.ReadKey(intercept: true);
         }
     }
 }

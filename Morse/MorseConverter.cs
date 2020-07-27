@@ -21,7 +21,7 @@ namespace Morse
             sb = new StringBuilder();
             foreach (var c in value.ToLower().Where(x => Database.CharToMorse.ContainsKey(x)))
             {
-                if (count > 1) sb.Append(separator);
+                if (count >= 0) sb.Append(separator);
                 sb.Append(Database.CharToMorse[c]);
                 count++;
             }
